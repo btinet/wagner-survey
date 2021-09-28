@@ -6,6 +6,7 @@ use App\Repository\SurveyQuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=SurveyQuestionRepository::class)
@@ -23,6 +24,12 @@ class SurveyQuestion
      * @ORM\Column(type="string", length=255)
      */
     private $question;
+
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     * @Gedmo\Slug(fields={"question"})
+     */
+    private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity=SurveyLine::class, mappedBy="question")
@@ -52,6 +59,18 @@ class SurveyQuestion
     public function setQuestion(string $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

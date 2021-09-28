@@ -56,7 +56,7 @@ class SurveyController extends AbstractController
             } catch (ORMException $e) {
             }
             $this->addFlash('success','Umfrage erfolgreich abgeschlossen');
-            $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_index');
         }
 
         return $this->render('survey/show.html.twig', [
