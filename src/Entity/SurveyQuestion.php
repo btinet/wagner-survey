@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\SurveyRepository;
+use App\Repository\SurveyQuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SurveyRepository::class)
+ * @ORM\Entity(repositoryClass=SurveyQuestionRepository::class)
  */
-class Survey
+class SurveyQuestion
 {
     /**
      * @ORM\Id
@@ -22,10 +22,10 @@ class Survey
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private $question;
 
     /**
-     * @ORM\ManyToMany(targetEntity=SurveyLine::class, inversedBy="surveys")
+     * @ORM\OneToMany(targetEntity=SurveyLine::class, mappedBy="question")
      */
     private $surveyLines;
 
@@ -36,7 +36,7 @@ class Survey
 
     public function __toString()
     {
-        return $this->title;
+        return $this->question;
     }
 
     public function getId(): ?int
@@ -44,14 +44,14 @@ class Survey
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getQuestion(): ?string
     {
-        return $this->title;
+        return $this->question;
     }
 
-    public function setTitle(string $title): self
+    public function setQuestion(string $question): self
     {
-        $this->title = $title;
+        $this->question = $question;
 
         return $this;
     }
@@ -68,6 +68,7 @@ class Survey
     {
         if (!$this->surveyLines->contains($surveyLine)) {
             $this->surveyLines[] = $surveyLine;
+            $surveyLine->setQuestion($this);
         }
 
         return $this;
@@ -75,7 +76,12 @@ class Survey
 
     public function removeSurveyLine(SurveyLine $surveyLine): self
     {
-        $this->surveyLines->removeElement($surveyLine);
+        if ($this->surveyLines->removeElement($surveyLine)) {
+            // set the owning side to null (unless already changed)
+            if ($surveyLine->getQuestion() === $this) {
+                $surveyLine->setQuestion(null);
+            }
+        }
 
         return $this;
     }

@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\SurveyRepository;
+use App\Repository\SurveyAnswerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SurveyRepository::class)
+ * @ORM\Entity(repositoryClass=SurveyAnswerRepository::class)
  */
-class Survey
+class SurveyAnswer
 {
     /**
      * @ORM\Id
@@ -22,10 +22,10 @@ class Survey
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private $answer;
 
     /**
-     * @ORM\ManyToMany(targetEntity=SurveyLine::class, inversedBy="surveys")
+     * @ORM\ManyToMany(targetEntity=SurveyLine::class, mappedBy="answers")
      */
     private $surveyLines;
 
@@ -36,7 +36,7 @@ class Survey
 
     public function __toString()
     {
-        return $this->title;
+        return $this->answer;
     }
 
     public function getId(): ?int
@@ -44,14 +44,14 @@ class Survey
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getAnswer(): ?string
     {
-        return $this->title;
+        return $this->answer;
     }
 
-    public function setTitle(string $title): self
+    public function setAnswer(string $answer): self
     {
-        $this->title = $title;
+        $this->answer = $answer;
 
         return $this;
     }
@@ -68,6 +68,7 @@ class Survey
     {
         if (!$this->surveyLines->contains($surveyLine)) {
             $this->surveyLines[] = $surveyLine;
+            $surveyLine->addAnswer($this);
         }
 
         return $this;
@@ -75,7 +76,9 @@ class Survey
 
     public function removeSurveyLine(SurveyLine $surveyLine): self
     {
-        $this->surveyLines->removeElement($surveyLine);
+        if ($this->surveyLines->removeElement($surveyLine)) {
+            $surveyLine->removeAnswer($this);
+        }
 
         return $this;
     }

@@ -2,17 +2,17 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Survey;
+use App\Entity\SurveyLine;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class SurveyCrudController extends AbstractCrudController
+class SurveyLineCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Survey::class;
+        return SurveyLine::class;
     }
 
 
@@ -21,7 +21,8 @@ class SurveyCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('title'),
-            AssociationField::new('surveyLines'),
+            AssociationField::new('question'),
+            AssociationField::new('answers'),
         ];
     }
 
