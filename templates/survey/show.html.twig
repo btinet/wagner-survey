@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="card px-0">
+        <div class="card-body bg-danger text-white">
+            <p class="card-text d-flex justify-content-between align-items-center">
+                <a href="{{ path('app_index') }}" class="btn btn-sm btn-dark">Zurück</a>
+                {{ survey.title }}
+                <span></span>
+            </p>
+        </div>
+        <div class="card-body">
+            <form class="container" method="post">
+            {% for line in survey.surveyLines %}
+                {% if line.answers|length > 1 %}
+                    <div class="row">
+                        <label class="form-label">
+                            {{ line.question }}
+                            <select name="{{ line.question }}" class="form-select">
+                                {% for option in line.answers %}
+                                    <option  value="{{ option.answer }}">{{ option.answer }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <label class="form-label">
+                            {{ line.question }}
+                            <input class="form-control" type="text" name="{{ line.question }}" placeholder="{{ line.question }}">
+                        </label>
+                    </div>
+                {% endif %}
+            {% endfor %}
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" name="survey" value="submit" class="btn btn-primary float-end">Absenden</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            An Umfrage teilnehmen.
+        </div>
+    </div>
+{% endblock %}

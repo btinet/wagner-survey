@@ -27,5 +27,4 @@ class MainController extends AbstractController
         ]);
     }
 
-
 }

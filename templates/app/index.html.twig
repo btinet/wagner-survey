@@ -9,7 +9,7 @@
         </div>
         <div class="list-group list-group-flush">
             {% for survey in surveys %}
-            <a href="#" class="list-group-item list-group-item-action">{{ survey.title }}</a>
+            <a href="{{ path('survey_show',{'id':survey.id}) }}" class="list-group-item list-group-item-action">{{ survey.title }}</a>
             {% endfor %}
         </div>
         <div class="card-footer">
