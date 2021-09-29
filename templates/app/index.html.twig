@@ -12,7 +12,7 @@
                 {% if survey.end|date("d.m.Y") <= "now"|date("d.m.Y") %}
                     <a href="{{ path('survey_show',{'id':survey.id}) }}" class="list-group-item list-group-item-action">
                         {{ survey.title }}
-                        <div>gültig bis: {{ survey.end|date('d.m.Y') }}</div>
+                        <div class="small text-muted">gültig bis: {{ survey.end|date('d.m.Y') }}</div>
                     </a>
 
                     {% else %}

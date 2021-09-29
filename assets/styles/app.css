@@ -1,3 +1,9 @@
 @import "~bootstrap";
 @import "bootstrap.min.css";
 
+form label.required:after
+{
+    color: red;
+    content: " *";
+}
+

@@ -10,37 +10,42 @@
             </p>
         </div>
         <div class="card-body">
-            <form class="container" method="post">
+            <form class="container needs-validation" method="post" novalidate>
             {% for line in survey.surveyLines %}
                 {% if line.answers|length > 1 %}
-                    <div class="row">
-                        <label class="form-label">
+                    <div class="row mb-3">
+                        <label class="form-label required" for="{{ line.question.slug }}">
                             {{ line.title }}
-                            <select name="{{ line.question.slug }}" class="form-select">
+                        </label>
+                        <div class="col">
+                            <select id="{{ line.question.slug }}" required name="{{ line.question.slug }}" class="form-select">
+                                <option value="" selected="selected">--</option>
                                 {% for option in line.answers %}
                                     <option  value="{{ option.answer }}">{{ option.answer }}</option>
                                 {% endfor %}
                             </select>
-                        </label>
+                        </div>
                     </div>
                     {% else %}
-                    <div class="row">
-                        <label class="form-label">
+                    <div class="row mb-3">
+                        <label class="form-label required" for="{{ line.question.slug }}">
                             {{ line.title }}
-                            <input class="form-control" type="text" name="{{ line.question }}" placeholder="{{ line.question }}">
                         </label>
+                        <div class="col">
+                            <input id="{{ line.question.slug }}" required class="form-control" type="text" name="{{ line.question }}" placeholder="{{ line.question }}">
+                        </div>
                     </div>
                 {% endif %}
             {% endfor %}
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="btn btn-primary float-end">Absenden</button>
+                        <button type="submit" class="btn btn-primary">Absenden</button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="card-footer">
-            An Umfrage teilnehmen.
+        <div class="card-footer text-end">
+            Umfrage vom {{ survey.created|date('d.m.Y') }} <small>(aktualisiert am {{ survey.updated|date('d.m.Y') }})</small>
         </div>
     </div>
 {% endblock %}
