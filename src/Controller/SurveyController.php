@@ -42,20 +42,30 @@ class SurveyController extends AbstractController
         */
 
         if($request->isMethod('POST')){
-            $_form = [];
-            $surveyResult = new SurveyResult();
+
             $form = $request->request->all();
-            $surveyResult->setTitle($survey->getTitle());
-            foreach($form as $key => $value){
-                $_form[$key] = $value;
+            $previousResult = $this->getDoctrine()->getRepository(SurveyResult::class)
+                ->getNextLineNumber();
+            if($previousResult->getLineNumber()){
+                $lineNumber = $previousResult->getLineNumber();
+                $lineNumber++;
+            } else {
+                $lineNumber = 1;
             }
-            $surveyResult->setContent($_form);
-            try {
-                $manager->persist($surveyResult);
-                $manager->flush();
-            } catch (ORMException $e) {
+            foreach($form as $question => $answer){
+                try {
+                    $surveyResult = new SurveyResult();
+                    $surveyResult->setTitle($survey->getTitle());
+                    $surveyResult->setQuestion($question);
+                    $surveyResult->setAnswer($answer);
+                    $surveyResult->setLineNumber($lineNumber);
+                    $manager->persist($surveyResult);
+                } catch (ORMException $e) {
+
+                }
             }
-            $this->addFlash('success','Umfrage erfolgreich abgeschlossen');
+            $manager->flush();
+            $this->addFlash('success','Umfrage erfolgreich abgeschlossen. Vielen Dank!');
             return $this->redirectToRoute('app_index');
         }
 

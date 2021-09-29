@@ -9,7 +9,18 @@
         </div>
         <div class="list-group list-group-flush">
             {% for survey in surveys %}
-            <a href="{{ path('survey_show',{'id':survey.id}) }}" class="list-group-item list-group-item-action">{{ survey.title }}</a>
+                {% if survey.end|date("d.m.Y") <= "now"|date("d.m.Y") %}
+                    <a href="{{ path('survey_show',{'id':survey.id}) }}" class="list-group-item list-group-item-action">
+                        {{ survey.title }}
+                        <div>gültig bis: {{ survey.end|date('d.m.Y') }}</div>
+                    </a>
+
+                    {% else %}
+                        <span class="list-group-item disabled">
+                            {{ survey.title }}
+                            <div>abgelaufen am: {{ survey.end|date('d.m.Y') }}</div>
+                        </span>
+                {% endif %}
             {% endfor %}
         </div>
         <div class="card-footer">

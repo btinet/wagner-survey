@@ -47,4 +47,15 @@ class SurveyResultRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getNextLineNumber()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->orderBy('p.lineNumber', 'DESC')
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

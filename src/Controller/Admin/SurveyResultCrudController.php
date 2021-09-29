@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class SurveyResultCrudController extends AbstractCrudController
@@ -22,7 +23,10 @@ class SurveyResultCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
+            NumberField::new('lineNumber')->hideOnForm(),
             TextField::new('title'),
+            TextField::new('question'),
+            TextField::new('answer'),
             ArrayField::new('content')->setColumns('2'),
         ];
     }
