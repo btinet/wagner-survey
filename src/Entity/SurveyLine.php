@@ -39,6 +39,11 @@ class SurveyLine
      */
     private $surveys;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isRequired;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -126,6 +131,18 @@ class SurveyLine
         if ($this->surveys->removeElement($survey)) {
             $survey->removeSurveyLine($this);
         }
+
+        return $this;
+    }
+
+    public function getIsRequired(): ?bool
+    {
+        return $this->isRequired;
+    }
+
+    public function setIsRequired(?bool $isRequired): self
+    {
+        $this->isRequired = $isRequired;
 
         return $this;
     }

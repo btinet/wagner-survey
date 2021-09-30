@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}{{ survey.title }} - {% endblock %}
 {% block body %}
     <div class="card px-0">
         <div class="card-body bg-danger text-white">
@@ -12,13 +12,18 @@
         <div class="card-body">
             <form class="container needs-validation" method="post" novalidate>
             {% for line in survey.surveyLines %}
+                {% if line.isRequired %}
+                    {% set required = "required" %}
+                    {% else %}
+                        {% set required = "" %}
+                {% endif %}
                 {% if line.answers|length > 1 %}
                     <div class="row mb-3">
-                        <label class="form-label required" for="{{ line.question.slug }}">
+                        <label class="form-label {{ required }}" for="{{ line.question.slug }}">
                             {{ line.title }}
                         </label>
                         <div class="col">
-                            <select id="{{ line.question.slug }}" required name="{{ line.question.slug }}" class="form-select">
+                            <select id="{{ line.question.slug }}" {{ required }} name="{{ line.question.slug }}" class="form-select">
                                 <option value="" selected="selected">--</option>
                                 {% for option in line.answers %}
                                     <option  value="{{ option.answer }}">{{ option.answer }}</option>
@@ -28,11 +33,11 @@
                     </div>
                     {% else %}
                     <div class="row mb-3">
-                        <label class="form-label required" for="{{ line.question.slug }}">
+                        <label class="form-label {{ required }}" for="{{ line.question.slug }}">
                             {{ line.title }}
                         </label>
                         <div class="col">
-                            <input id="{{ line.question.slug }}" required class="form-control" type="text" name="{{ line.question }}" placeholder="{{ line.question }}">
+                            <input id="{{ line.question.slug }}" {{ required }} class="form-control" type="text" name="{{ line.question }}" placeholder="{{ line.question }}">
                         </div>
                     </div>
                 {% endif %}

@@ -41,32 +41,44 @@ class SurveyController extends AbstractController
         $form->getForm();
         */
 
-        if($request->isMethod('POST')){
+        if($request->isMethod('POST')) {
+            //dd($request->request->all());
+            if ($survey->getCode() == $request->request->get('Code')) {
 
-            $form = $request->request->all();
-            $previousResult = $this->getDoctrine()->getRepository(SurveyResult::class)
-                ->getNextLineNumber();
-            if($previousResult->getLineNumber()){
-                $lineNumber = $previousResult->getLineNumber();
-                $lineNumber++;
-            } else {
-                $lineNumber = 1;
-            }
-            foreach($form as $question => $answer){
+                $form = $request->request->all();
+                /*
+                $previousResult = $this->getDoctrine()->getRepository(SurveyResult::class)
+                    ->getNextLineNumber();
+                if($previousResult->getLineNumber()){
+                    $lineNumber = $previousResult->getLineNumber();
+                    $lineNumber++;
+                } else {
+                    $lineNumber = 1;
+                }
+                */
+                $_form = [];
+                foreach ($form as $question => $answer) {
+                    $_form[$question] = $answer;
+                }
                 try {
                     $surveyResult = new SurveyResult();
-                    $surveyResult->setTitle($survey->getTitle());
+                    /*
                     $surveyResult->setQuestion($question);
                     $surveyResult->setAnswer($answer);
                     $surveyResult->setLineNumber($lineNumber);
+                    */
+                    $surveyResult->setContent($_form);
+
                     $manager->persist($surveyResult);
                 } catch (ORMException $e) {
 
                 }
+                $manager->flush();
+                $this->addFlash('success', 'Umfrage erfolgreich abgeschlossen. Vielen Dank!');
+                return $this->redirectToRoute('app_index');
+            } else {
+                $this->addFlash('warning', 'Der Code stimmt nicht überein!');
             }
-            $manager->flush();
-            $this->addFlash('success','Umfrage erfolgreich abgeschlossen. Vielen Dank!');
-            return $this->redirectToRoute('app_index');
         }
 
         return $this->render('survey/show.html.twig', [

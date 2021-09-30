@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Alle Umfragen - {% endblock %}
 {% block body %}
     <div class="card px-0">
         <div class="card-body bg-danger text-white">
@@ -9,7 +9,7 @@
         </div>
         <div class="list-group list-group-flush">
             {% for survey in surveys %}
-                {% if survey.end|date("d.m.Y") <= "now"|date("d.m.Y") %}
+                {% if date("now") > date(survey.start)  and date("now") < date(survey.end) %}
                     <a href="{{ path('survey_show',{'id':survey.id}) }}" class="list-group-item list-group-item-action">
                         {{ survey.title }}
                         <div class="small text-muted">gültig bis: {{ survey.end|date('d.m.Y') }}</div>
@@ -18,7 +18,7 @@
                     {% else %}
                         <span class="list-group-item disabled">
                             {{ survey.title }}
-                            <div>abgelaufen am: {{ survey.end|date('d.m.Y') }}</div>
+                            <div>gültig von: {{ survey.start|date('d.m.Y') }} - {{ survey.end|date('d.m.Y') }}</div>
                         </span>
                 {% endif %}
             {% endfor %}

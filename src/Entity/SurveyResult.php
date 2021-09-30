@@ -17,10 +17,7 @@ class SurveyResult
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
+
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -28,35 +25,15 @@ class SurveyResult
     private $content = [];
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $question;
+    private $answers = [];
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $answer;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $lineNumber;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     public function getContent(): ?array
@@ -71,39 +48,16 @@ class SurveyResult
         return $this;
     }
 
-    public function getQuestion(): ?string
+    public function getAnswers(): ?array
     {
-        return $this->question;
+        return $this->answers;
     }
 
-    public function setQuestion(?string $question): self
+    public function setAnswers(?array $answers): self
     {
-        $this->question = $question;
+        $this->answers = $answers;
 
         return $this;
     }
 
-    public function getAnswer(): ?string
-    {
-        return $this->answer;
-    }
-
-    public function setAnswer(?string $answer): self
-    {
-        $this->answer = $answer;
-
-        return $this;
-    }
-
-    public function getLineNumber(): ?int
-    {
-        return $this->lineNumber;
-    }
-
-    public function setLineNumber(?int $lineNumber): self
-    {
-        $this->lineNumber = $lineNumber;
-
-        return $this;
-    }
 }

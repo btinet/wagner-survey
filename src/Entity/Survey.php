@@ -64,6 +64,11 @@ class Survey
      */
     private $end;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $code;
+
     public function __construct()
     {
         $this->surveyLines = new ArrayCollection();
@@ -157,6 +162,18 @@ class Survey
     public function setEnd(?\DateTimeInterface $end): self
     {
         $this->end = $end;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

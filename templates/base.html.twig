@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{% endblock %}Wagner Survey</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
@@ -31,14 +31,19 @@
         </div>
     </nav>
     <div class="container py-5">
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+            <div class="alert alert-{{ label }}">
                 {{ message }}
             </div>
+        {% endfor %}
         {% endfor %}
         <div class="row">
             {% block body %}{% endblock %}
         </div>
+    </div>
+    <div class="container py-5">
+    <a href="https://www.wagnerpictures.com/page/impressum" target="_blank">Impressum</a>
     </div>
     </body>
 </html>

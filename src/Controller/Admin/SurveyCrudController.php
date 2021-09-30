@@ -22,6 +22,7 @@ class SurveyCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('title'),
+            TextField::new('code'),
             AssociationField::new('surveyLines'),
             DateTimeField::new('start'),
             DateTimeField::new('end'),
